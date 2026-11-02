@@ -1,0 +1,12 @@
+# Generado por build.mjs
+dist/
+node_modules/
+.DS_Store
+
+# Análisis interno de la web actual: no se publica
+informe/
+
+# Secretos del servidor (solo en el hosting)
+src/api/config.php
+api/config.php
+contact.config.php

@@ -1,0 +1,4 @@
+# Solo se puede llamar a los endpoints; config.php nunca se sirve
+<Files "config.php">
+  Require all denied
+</Files>
