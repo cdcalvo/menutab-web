@@ -178,14 +178,15 @@
     up.addEventListener('submit', (e) => e.preventDefault()); // la subida se conecta con el backend en la fase de Stripe
   }
 
-  // Vídeos de las pantallas: solo se reproducen mientras se ven; con «reducir movimiento», imagen fija
+  // Vídeos: arrancan solos (autoplay + muted, como los admite Safari en iPhone) y se pausan
+  // fuera de pantalla para no gastar datos ni batería
   const vids = document.querySelectorAll('video[data-autoplay]');
-  if (vids.length && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+  if (vids.length && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(({ target: v, isIntersecting }) => {
-        if (isIntersecting) { v.muted = true; v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
+        if (isIntersecting) { v.muted = true; v.play().catch(() => {}); } else v.pause();
       });
-    }, { threshold: 0.35 });
+    }, { threshold: 0.25 });
     vids.forEach((v) => io.observe(v));
   }
 

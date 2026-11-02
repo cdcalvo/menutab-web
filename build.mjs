@@ -174,7 +174,7 @@ function home(t) {
     </div>
     <div class="screens">
       ${t.showcase.screens.map((s, i) => `<figure class="screen screen--${i}">${tablet(s.video
-        ? `<video muted loop playsinline preload="none" poster="${ctx.base}assets/video/${s.video}-poster.jpg" aria-label="${esc(s.title)}" data-autoplay><source src="${ctx.base}assets/video/${s.video}.mp4" type="video/mp4"></video>`
+        ? `<video autoplay muted loop playsinline preload="metadata" poster="${ctx.base}assets/video/${s.video}-poster.jpg" aria-label="${esc(s.title)}" data-autoplay><source src="${ctx.base}assets/video/${s.video}.mp4" type="video/mp4"></video>`
         : `<img src="${ctx.base}assets/img/${s.img}" alt="${esc(s.title)}" width="800" height="1280" loading="lazy">`)}<figcaption><b>${s.title}</b><span>${s.text}</span></figcaption></figure>`).join('')}
     </div>
   </div>
