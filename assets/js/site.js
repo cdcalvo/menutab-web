@@ -183,7 +183,7 @@
   if (vids.length && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(({ target: v, isIntersecting }) => {
-        if (isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
+        if (isIntersecting) { v.muted = true; v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
       });
     }, { threshold: 0.35 });
     vids.forEach((v) => io.observe(v));
