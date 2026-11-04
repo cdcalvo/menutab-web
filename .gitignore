@@ -10,3 +10,6 @@ informe/
 src/api/config.php
 api/config.php
 contact.config.php
+
+# Archivos de trabajo de la skill Taste
+.taste-skill/

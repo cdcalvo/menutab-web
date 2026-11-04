@@ -31,8 +31,7 @@ export const en = {
     { icon: 'lock', title: 'Locked to your menu', text: 'Tablets run in kiosk mode: no apps, no browsing, no surprises. Just your menu.' },
   ],
   showcase: {
-    kicker: 'See it in action',
-    title: 'Designed for your restaurant, not a template.',
+    title: 'Your restaurant, not a template.',
     lead: 'Your logo, your colors, your photos. Every menu is set up by our team to look like it belongs in your dining room.',
     screens: [
       { img: 'app-welcome.jpg', video: 'welcome', title: 'Welcome screen', text: 'Promotions, videos and specials greet every guest.' },
@@ -41,7 +40,6 @@ export const en = {
     ],
   },
   how: {
-    kicker: 'How it works',
     title: 'From paper menu to tablets in four steps.',
     steps: [
       { title: 'Choose your plan', text: 'Pick Self-Service or Fully Managed, and how many tablets you need. Already have tablets? Use them.' },
@@ -51,7 +49,6 @@ export const en = {
     ],
   },
   more: {
-    kicker: 'More than a menu',
     title: 'A marketing channel at every table.',
     items: [
       { title: 'QR codes that grow your business', text: 'Send guests to your Google reviews, Instagram, WhatsApp or online ordering with one scan.' },
@@ -61,7 +58,6 @@ export const en = {
     portal: { title: 'Restaurant portal', alt: 'Dish list in the menutab restaurant portal, with photos, descriptions and prices', caption: 'The real portal of one of our restaurants. The portal is in Spanish today.' },
   },
   pricing: {
-    kicker: 'Pricing',
     title: 'Simple plans. No surprises.',
     lead: 'One monthly price per restaurant. Your first payment covers the setup and your first month.',
     perMonth: '/month',
@@ -90,7 +86,6 @@ export const en = {
     },
   },
   faq: {
-    kicker: 'FAQ',
     title: 'Questions owners ask us.',
     items: [
       ['Do I need to buy new tablets?', 'No. If you already have compatible Android tablets, you can use them and only pay for the setup and the monthly plan.'],
@@ -104,7 +99,6 @@ export const en = {
     ],
   },
   contact: {
-    kicker: 'Let’s talk',
     title: 'Ready to put your menu on the table?',
     lead: 'Tell us about your restaurant and we’ll show you how your menu would look. No commitment.',
     fields: { name: 'Your name', restaurant: 'Restaurant', phone: 'Phone', email: 'Email', tables: 'Number of tables', message: 'Anything else? (optional)' },
@@ -118,7 +112,6 @@ export const en = {
   slugs: { start: 'start', thanks: 'thanks' },
   checkout: {
     meta: { title: 'Get started — menutab', description: 'Choose your plan and equipment and see your total before you pay. Secure checkout.' },
-    kicker: 'Get started',
     title: 'Set up your menutab.',
     lead: 'Choose your plan and your equipment. You’ll see exactly what you pay today and every month.',
     s1: 'Choose your plan',
@@ -190,8 +183,7 @@ export const es = {
     { icon: 'lock', title: 'Solo tu menú', text: 'Las tablets funcionan en modo kiosco: sin otras apps, sin navegar, sin sorpresas.' },
   ],
   showcase: {
-    kicker: 'Así se ve',
-    title: 'Diseñado para tu restaurante, no una plantilla.',
+    title: 'Tu restaurante, no una plantilla.',
     lead: 'Tu logo, tus colores, tus fotos. Nuestro equipo monta cada menú para que parezca hecho para tu salón.',
     screens: [
       { img: 'app-welcome.jpg', video: 'welcome', title: 'Pantalla de bienvenida', text: 'Promociones, videos y especiales para cada cliente.' },
@@ -200,7 +192,6 @@ export const es = {
     ],
   },
   how: {
-    kicker: 'Cómo funciona',
     title: 'Del menú de papel a las tablets en cuatro pasos.',
     steps: [
       { title: 'Elige tu plan', text: 'Autogestionado o Gestionado por nosotros, y cuántas tablets necesitas. ¿Ya tienes tablets? Úsalas.' },
@@ -210,7 +201,6 @@ export const es = {
     ],
   },
   more: {
-    kicker: 'Más que un menú',
     title: 'Un canal de marketing en cada mesa.',
     items: [
       { title: 'Códigos QR que hacen crecer tu negocio', text: 'Lleva a tus clientes a tus reseñas de Google, Instagram, WhatsApp o pedidos en línea con un escaneo.' },
@@ -220,7 +210,6 @@ export const es = {
     portal: { title: 'Portal del restaurante', alt: 'Lista de platos en el portal del restaurante de menutab, con fotos, descripciones y precios', caption: 'El portal real de uno de nuestros restaurantes.' },
   },
   pricing: {
-    kicker: 'Precios',
     title: 'Planes simples. Sin sorpresas.',
     lead: 'Un precio mensual por restaurante. Tu primer pago cubre la instalación y el primer mes.',
     perMonth: '/mes',
@@ -249,7 +238,6 @@ export const es = {
     },
   },
   faq: {
-    kicker: 'Preguntas',
     title: 'Lo que nos preguntan los dueños.',
     items: [
       ['¿Tengo que comprar tablets nuevas?', 'No. Si ya tienes tablets Android compatibles, puedes usarlas y pagar solo la instalación y el plan mensual.'],
@@ -263,7 +251,6 @@ export const es = {
     ],
   },
   contact: {
-    kicker: 'Hablemos',
     title: '¿Listo para poner tu menú en la mesa?',
     lead: 'Cuéntanos de tu restaurante y te mostramos cómo se vería tu menú. Sin compromiso.',
     fields: { name: 'Tu nombre', restaurant: 'Restaurante', phone: 'Teléfono', email: 'Correo', tables: 'Número de mesas', message: '¿Algo más? (opcional)' },
@@ -277,7 +264,6 @@ export const es = {
   slugs: { start: 'empezar', thanks: 'gracias' },
   checkout: {
     meta: { title: 'Empezar — menutab', description: 'Elige tu plan y tus equipos y ve el total antes de pagar. Pago seguro.' },
-    kicker: 'Empezar',
     title: 'Configura tu menutab.',
     lead: 'Elige tu plan y tus equipos. Verás exactamente lo que pagas hoy y cada mes.',
     s1: 'Elige tu plan',

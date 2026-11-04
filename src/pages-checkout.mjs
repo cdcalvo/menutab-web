@@ -27,7 +27,6 @@ export function startPage(t, ctx, { esc, money, icon, config }) {
       data-plans='${esc(JSON.stringify(Object.fromEntries(plans.map((pl) => [pl.key, pl.name]))))}'
       data-labels='${esc(JSON.stringify({ setup: c.setup, plan: c.plan, items: Object.fromEntries(Object.entries(c.items).map(([k, v]) => [k, v[0]])) }))}'>
       <header class="co__head">
-        <p class="kicker kicker--dark">${c.kicker}</p>
         <h1 class="h2">${c.title}</h1>
         <p class="lead">${c.lead}</p>
       </header>

@@ -79,6 +79,7 @@ ${ctx.key === 'thanks' || PREVIEW ? '<meta name="robots" content="noindex">\n' :
 <link rel="preload" href="${ctx.base}assets/fonts/jakarta-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${ctx.base}assets/fonts/manrope-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${ctx.base}assets/css/site.css">
+<script>/* Entradas al hacer scroll: se activan antes de pintar para que no parpadeen; si site.js no llega a tiempo, todo se muestra */(function(d){if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window){d.classList.add('reveal');setTimeout(function(){if(!window.__reveal)d.classList.remove('reveal')},2500)}})(document.documentElement)</script>
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>\n` : ''}</head>
 <body${onHome ? '' : ` class="page-${ctx.key}"`}>
 ${PREVIEW ? `<div class="preview-bar">${isEs ? 'Vista previa · los formularios y el pago están simulados' : 'Preview · forms and checkout are simulated'}</div>\n` : ''}<a class="skip" href="#main">${isEs ? 'Saltar al contenido' : 'Skip to content'}</a>
@@ -168,7 +169,6 @@ function home(t) {
 <section class="sec sec--paper" id="features">
   <div class="wrap">
     <div class="sec__head">
-      <p class="kicker kicker--dark">${t.showcase.kicker}</p>
       <h2 class="h2">${t.showcase.title}</h2>
       <p class="lead">${t.showcase.lead}</p>
     </div>
@@ -183,7 +183,6 @@ function home(t) {
 <section class="sec" id="how">
   <div class="wrap">
     <div class="sec__head">
-      <p class="kicker kicker--dark">${t.how.kicker}</p>
       <h2 class="h2">${t.how.title}</h2>
     </div>
     <ol class="steps">
@@ -195,7 +194,6 @@ function home(t) {
 <section class="sec sec--night">
   <div class="wrap more">
     <div class="more__copy">
-      <p class="kicker">${t.more.kicker}</p>
       <h2 class="h2">${t.more.title}</h2>
       <ul class="more__list">
         ${t.more.items.map((m, i) => `<li>${icon(['qr', 'play', 'edit'][i])}<div><h3>${m.title}</h3><p>${m.text}</p></div></li>`).join('')}
@@ -212,7 +210,6 @@ function home(t) {
 <section class="sec sec--paper" id="pricing">
   <div class="wrap">
     <div class="sec__head">
-      <p class="kicker kicker--dark">${t.pricing.kicker}</p>
       <h2 class="h2">${t.pricing.title}</h2>
       <p class="lead">${t.pricing.lead}</p>
     </div>
@@ -253,7 +250,6 @@ function home(t) {
 <section class="sec" id="faq">
   <div class="wrap faq">
     <div class="faq__head">
-      <p class="kicker kicker--dark">${t.faq.kicker}</p>
       <h2 class="h2">${t.faq.title}</h2>
     </div>
     <div class="faq__list">
@@ -265,7 +261,6 @@ function home(t) {
 <section class="sec sec--night cta" id="contact">
   <div class="wrap cta__in">
     <div class="cta__copy">
-      <p class="kicker">${t.contact.kicker}</p>
       <h2 class="h2">${t.contact.title}</h2>
       <p class="lead">${t.contact.lead}</p>
       ${wa ? `<a class="btn btn--ghost" href="${wa}" target="_blank" rel="noopener">${icon('wa', 'ico ico--sm')} ${t.contact.whatsapp}</a>` : ''}

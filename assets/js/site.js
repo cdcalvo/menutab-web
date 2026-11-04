@@ -190,6 +190,22 @@
     vids.forEach((v) => io.observe(v));
   }
 
+  // Entradas al hacer scroll: lo que entra en pantalla a la vez aparece escalonado (75 ms).
+  // La clase .reveal la pone el <head>; REVEAL debe coincidir con el selector de site.css.
+  const root = document.documentElement;
+  if (root.classList.contains('reveal')) {
+    window.__reveal = 1;
+    const REVEAL = '.hero__copy > *, .hero__media, .value, .sec__head > *, .screen, .step, .more__copy > .h2, .more__list li, .portal, .plan, .hw, .faq__head > *, .qa, .cta__copy > :not(.btn), .form';
+    const io = new IntersectionObserver((entries) => {
+      entries.filter((e) => e.isIntersecting).forEach(({ target }, k) => {
+        target.style.transitionDelay = `${Math.min(k, 6) * 75}ms`;
+        target.classList.add('is-in');
+        io.unobserve(target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    document.querySelectorAll(REVEAL).forEach((el) => io.observe(el));
+  }
+
   // Menú en vivo: se carga solo al abrirlo, en una ventana encima de la página
   const demo = document.querySelector('[data-demo]');
   if (demo && typeof demo.showModal === 'function') {
