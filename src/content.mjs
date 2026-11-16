@@ -40,13 +40,27 @@ export const en = {
     ],
   },
   how: {
-    title: 'From paper menu to tablets in four steps.',
+    title: 'Your menu on tablets, in five easy steps.',
+    lead: 'You choose and send us your menu as you have it. We design it, show you options and adjust it until you love it.',
     steps: [
-      { title: 'Choose your plan', text: 'Pick Self-Service or Fully Managed, and how many tablets you need. Already have tablets? Use them.' },
-      { title: 'Send us your menu', text: 'Your current menu (PDF or photos) and pictures of your dishes. That’s all we need.' },
-      { title: 'We design and set up', text: 'We build your menu with your brand, load every dish and prepare each tablet.' },
-      { title: 'Plug in and serve', text: 'Tablets arrive ready to use, locked to your menu, with access to your restaurant portal.' },
+      { title: 'Choose your plan and tablets', text: 'Pick your plan and how many tablets you need, or use your own. You see the total before you pay, and pay securely online.' },
+      { title: 'Upload your menu, as it is', text: 'Photos of your printed menu, a PDF or an Excel sheet, plus your logo and pictures of your dishes. No special format needed.' },
+      { title: 'We show you design options', text: 'We design your menu with your brand and send you proposals so you can see how it would look on the tablet.' },
+      { title: 'We adjust it until you approve it', text: 'Ask for changes by message and we make them. You see every version working before you give the go-ahead.' },
+      { title: 'Your tablets arrive ready', text: 'With your menu loaded and locked in kiosk mode. Plug them in and start serving.' },
     ],
+    ui: {
+      options: ['Option 1', 'Option 2', 'Option 3'],
+      optionsAlt: 'Design proposal',
+      alts: ['A restaurant owner, credit card in hand, choosing her plan in the menutab order configurator on her laptop', 'A cook taking a photo of a bandeja paisa with his phone', '', 'The owner and her cook review the menu design on a tablet; on screen, the Pal’ Rancho menu', 'An open box with three tablets, a charging station and USB-C cables'],
+      captions: ['On the screen: the real menutab order configurator.', '', 'Three of the proposals we made for Pal’ Rancho.', 'On the tablet: the design Pal’ Rancho approved.', ''],
+      end: {
+        title: 'And your guests order with their eyes.',
+        text: 'They see every dish with its photo before ordering, and when they finish they keep browsing: dessert, another drink, their next visit.',
+        alt: 'A couple at a restaurant table, their bandeja paisa half eaten, choosing a dessert on the tablet; on screen, the Pal’ Rancho desserts',
+        caption: 'On the tablet: the Pal’ Rancho desserts.',
+      },
+    },
   },
   more: {
     title: 'A marketing channel at every table.',
@@ -56,6 +70,16 @@ export const en = {
       { title: 'Your restaurant portal', text: 'Edit dishes, prices, photos and categories from your phone or computer, any time.' },
     ],
     portal: { title: 'Restaurant portal', alt: 'Dish list in the menutab restaurant portal, with photos, descriptions and prices', caption: 'The real portal of one of our restaurants. The portal is in Spanish today.' },
+  },
+  clients: {
+    title: 'Already on their tables.',
+    lead: 'Real restaurants that use menutab every day. This is their menu, as their guests see it.',
+    items: [
+      { key: 'don-matias', name: 'Don Matías', city: 'Miami, FL', fact: '117 dishes, 111 with their photo', scroll: 48 },
+      { key: 'el-rey', name: 'El Rey de la Salchipapa', city: 'Miami, FL', fact: '110 dishes, every one with its photo', scroll: 51 },
+      { key: 'pal-rancho', name: 'Pal’ Rancho', city: 'Coral Springs, FL', fact: '279 dishes in 9 categories, in English and Spanish', scroll: 40 },
+    ],
+    menuAlt: 'The menutab menu of',
   },
   pricing: {
     title: 'Simple plans. No surprises.',
@@ -88,6 +112,8 @@ export const en = {
   faq: {
     title: 'Questions owners ask us.',
     items: [
+      ['What do I need to send you?', 'Your menu as you have it today (photos of the printed menu, a PDF or an Excel sheet), your logo and pictures of your dishes. You upload them right after you order.'],
+      ['What if I don’t like the design?', 'We change it. You see every version working, just like on the tablet, and we keep adjusting it until you approve it.'],
       ['Do I need to buy new tablets?', 'No. If you already have compatible Android tablets, you can use them and only pay for the setup and the monthly plan.'],
       ['What happens if the internet goes down?', 'Nothing your guests will notice. The menu is stored on each tablet and keeps working offline. Changes sync as soon as the connection is back.'],
       ['Can I update the menu myself?', 'Yes. With Self-Service you edit prices, photos, dishes and promotions from the restaurant portal, and every tablet updates automatically.'],
@@ -136,7 +162,7 @@ export const en = {
     methods: 'Card · Apple Pay · Google Pay',
     demo: 'Preview: on the live site this button opens Stripe’s secure checkout.',
     next: 'What happens next',
-    nextSteps: ['Upload your menu and dish photos', 'We design your menu with your brand', 'Your tablets arrive ready to use'],
+    nextSteps: ['Upload your menu (photos, PDF or Excel) and dish photos', 'We send you the design and adjust it until you approve it', 'Your tablets arrive ready to use'],
     unit: 'each',
   },
   thanks: {
@@ -145,8 +171,8 @@ export const en = {
     title: 'Thank you! Let’s build your menu.',
     lead: 'We’ve emailed your receipt. Now send us your menu and the photos of your dishes so we can start.',
     order: 'Order',
-    upload: { title: 'Send us your menu', text: 'Your current menu (PDF or photos) and pictures of your dishes.', drop: 'Drag files here or', browse: 'browse', limits: 'PDF, JPG, PNG or HEIC · up to 20 MB each', send: 'Send files', alt: 'Prefer email? Send them to' },
-    steps: [['Today', 'You upload your menu and photos.'], ['Next days', 'We design your menu and load every dish.'], ['Delivery', 'Your tablets arrive ready to plug in and serve.']],
+    upload: { title: 'Send us your menu', text: 'Your menu as you have it (photos, PDF or Excel), your logo and pictures of your dishes.', drop: 'Drag files here or', browse: 'browse', limits: 'Photos, PDF, Excel or Word · up to 20 MB each', send: 'Send files', sending: 'Sending', sent: 'Received! We’ll send you the first proposal of your menu by email.', error: 'Some files could not be sent. Try again or email them to', who: 'So we know whose menu this is:', fields: { restaurant: 'Restaurant', email: 'Email' }, tooBig: 'larger than 20 MB', badType: 'file type not accepted', alt: 'Prefer email? Send them to' },
+    steps: [['Today', 'You upload your menu and photos.'], ['Proposal', 'We send you a link to see your menu working.'], ['Changes', 'You ask for changes and we make them until you approve it.'], ['Delivery', 'Your tablets arrive ready to plug in and serve.']],
     help: 'Questions? Write to us at',
     back: 'Back to home',
   },
@@ -192,13 +218,27 @@ export const es = {
     ],
   },
   how: {
-    title: 'Del menú de papel a las tablets en cuatro pasos.',
+    title: 'Tu menú en tablets, en cinco pasos sencillos.',
+    lead: 'Tú eliges y nos envías tu menú como lo tengas. Nosotros lo diseñamos, te mostramos opciones y lo ajustamos hasta que te encante.',
     steps: [
-      { title: 'Elige tu plan', text: 'Autogestionado o Gestionado por nosotros, y cuántas tablets necesitas. ¿Ya tienes tablets? Úsalas.' },
-      { title: 'Envíanos tu menú', text: 'Tu menú actual (PDF o fotos) y las fotos de tus platos. Con eso basta.' },
-      { title: 'Lo diseñamos y lo instalamos', text: 'Montamos tu menú con tu marca, cargamos cada plato y preparamos cada tablet.' },
-      { title: 'Enchufa y sirve', text: 'Las tablets llegan listas, bloqueadas en tu menú y con acceso a tu portal del restaurante.' },
+      { title: 'Elige tu plan y tus tablets', text: 'Escoges el plan y cuántas tablets necesitas, o usas las tuyas. Ves el total antes de pagar y pagas en línea, seguro.' },
+      { title: 'Sube tu menú como lo tengas', text: 'Fotos de la carta, un PDF o un Excel, más tu logo y las fotos de tus platos. Sin formatos especiales.' },
+      { title: 'Te mostramos varias propuestas', text: 'Diseñamos tu menú con tu marca y te enviamos opciones para que veas cómo quedaría en la tablet.' },
+      { title: 'Lo ajustamos hasta que lo apruebes', text: 'Pides cambios por mensaje y los hacemos. Cada versión la ves funcionando antes de dar el visto bueno.' },
+      { title: 'Recibe tus tablets listas', text: 'Con tu menú cargado y bloqueadas en modo kiosco. Las enchufas y empiezas a servir.' },
     ],
+    ui: {
+      options: ['Opción 1', 'Opción 2', 'Opción 3'],
+      optionsAlt: 'Propuesta de diseño',
+      alts: ['Una dueña de restaurante, con la tarjeta en la mano, elige su plan en el configurador de menutab en su portátil', 'Un cocinero toma una foto de una bandeja paisa con el celular', '', 'La dueña y su cocinero revisan el diseño del menú en una tablet; en pantalla, el menú de Pal’ Rancho', 'Una caja abierta con tres tablets, una estación de carga y cables USB-C'],
+      captions: ['En la pantalla: el configurador de compra real de menutab.', '', 'Tres de las propuestas que preparamos para Pal’ Rancho.', 'En la tablet: el diseño que aprobó Pal’ Rancho.', ''],
+      end: {
+        title: 'Y tus clientes piden con los ojos.',
+        text: 'Ven cada plato con su foto antes de pedir, y al terminar siguen mirando: el postre, otra bebida, la próxima visita.',
+        alt: 'Una pareja en el restaurante, con la bandeja paisa a medio comer, elige un postre en la tablet; en pantalla, los postres de Pal’ Rancho',
+        caption: 'En la tablet: los postres de Pal’ Rancho.',
+      },
+    },
   },
   more: {
     title: 'Un canal de marketing en cada mesa.',
@@ -208,6 +248,16 @@ export const es = {
       { title: 'Tu portal del restaurante', text: 'Edita platos, precios, fotos y categorías desde el celular o el computador, cuando quieras.' },
     ],
     portal: { title: 'Portal del restaurante', alt: 'Lista de platos en el portal del restaurante de menutab, con fotos, descripciones y precios', caption: 'El portal real de uno de nuestros restaurantes.' },
+  },
+  clients: {
+    title: 'Ya están en sus mesas.',
+    lead: 'Restaurantes reales que usan menutab todos los días. Este es su menú, tal como lo ven sus clientes.',
+    items: [
+      { key: 'don-matias', name: 'Don Matías', city: 'Miami, FL', fact: '117 platos, 111 con su foto', scroll: 48 },
+      { key: 'el-rey', name: 'El Rey de la Salchipapa', city: 'Miami, FL', fact: '110 platos, todos con su foto', scroll: 51 },
+      { key: 'pal-rancho', name: 'Pal’ Rancho', city: 'Coral Springs, FL', fact: '279 platos en 9 categorías, en inglés y español', scroll: 40 },
+    ],
+    menuAlt: 'El menú de menutab de',
   },
   pricing: {
     title: 'Planes simples. Sin sorpresas.',
@@ -240,6 +290,8 @@ export const es = {
   faq: {
     title: 'Lo que nos preguntan los dueños.',
     items: [
+      ['¿Qué tengo que enviarles?', 'Tu menú como lo tengas hoy (fotos de la carta, un PDF o un Excel), tu logo y las fotos de tus platos. Los subes justo después de hacer tu pedido.'],
+      ['¿Y si no me gusta el diseño?', 'Lo cambiamos. Ves cada versión funcionando, tal como se verá en la tablet, y la seguimos ajustando hasta que la apruebes.'],
       ['¿Tengo que comprar tablets nuevas?', 'No. Si ya tienes tablets Android compatibles, puedes usarlas y pagar solo la instalación y el plan mensual.'],
       ['¿Qué pasa si se cae internet?', 'Nada que tus clientes noten. El menú está guardado en cada tablet y sigue funcionando sin conexión. Los cambios se sincronizan en cuanto vuelve.'],
       ['¿Puedo cambiar el menú yo mismo?', 'Sí. Con el plan Autogestionado cambias precios, fotos, platos y promociones desde el portal, y todas las tablets se actualizan solas.'],
@@ -288,7 +340,7 @@ export const es = {
     methods: 'Tarjeta · Apple Pay · Google Pay',
     demo: 'Vista previa: en la web publicada este botón abre el pago seguro de Stripe.',
     next: 'Qué pasa después',
-    nextSteps: ['Subes tu menú y las fotos de tus platos', 'Diseñamos tu menú con tu marca', 'Tus tablets llegan listas para usar'],
+    nextSteps: ['Subes tu menú (fotos, PDF o Excel) y las fotos de tus platos', 'Te enviamos el diseño y lo ajustamos hasta que lo apruebes', 'Tus tablets llegan listas para usar'],
     unit: 'c/u',
   },
   thanks: {
@@ -297,8 +349,8 @@ export const es = {
     title: '¡Gracias! Vamos a crear tu menú.',
     lead: 'Te enviamos el recibo por correo. Ahora envíanos tu menú y las fotos de tus platos para empezar.',
     order: 'Pedido',
-    upload: { title: 'Envíanos tu menú', text: 'Tu menú actual (PDF o fotos) y las fotos de tus platos.', drop: 'Arrastra los archivos aquí o', browse: 'búscalos', limits: 'PDF, JPG, PNG o HEIC · hasta 20 MB cada uno', send: 'Enviar archivos', alt: '¿Prefieres el correo? Envíalos a' },
-    steps: [['Hoy', 'Subes tu menú y tus fotos.'], ['Próximos días', 'Diseñamos tu menú y cargamos cada plato.'], ['Entrega', 'Tus tablets llegan listas para enchufar y servir.']],
+    upload: { title: 'Envíanos tu menú', text: 'Tu menú como lo tengas (fotos, PDF o Excel), tu logo y las fotos de tus platos.', drop: 'Arrastra los archivos aquí o', browse: 'búscalos', limits: 'Fotos, PDF, Excel o Word · hasta 20 MB cada uno', send: 'Enviar archivos', sending: 'Enviando', sent: '¡Recibido! Te enviaremos por correo la primera propuesta de tu menú.', error: 'Algunos archivos no se pudieron enviar. Inténtalo de nuevo o envíalos a', who: 'Para saber de quién es el menú:', fields: { restaurant: 'Restaurante', email: 'Correo' }, tooBig: 'pesa más de 20 MB', badType: 'tipo de archivo no admitido', alt: '¿Prefieres el correo? Envíalos a' },
+    steps: [['Hoy', 'Subes tu menú y tus fotos.'], ['Propuesta', 'Te enviamos un enlace para ver tu menú funcionando.'], ['Ajustes', 'Pides cambios y los hacemos hasta que lo apruebes.'], ['Entrega', 'Tus tablets llegan listas para enchufar y servir.']],
     help: '¿Dudas? Escríbenos a',
     back: 'Volver al inicio',
   },

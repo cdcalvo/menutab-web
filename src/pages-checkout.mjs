@@ -1,6 +1,9 @@
 // Páginas de compra: configurador («Get started» / «Empezar») y confirmación («Gracias»).
 // El pago lo cobra Stripe Checkout (api/checkout.php); aquí solo se arma el pedido.
 
+// Lo mismo que acepta api/upload.php
+const ACCEPT = '.pdf,.jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.xlsx,.xls,.csv,.doc,.docx,.txt';
+
 const LOCK = '<svg class="ico ico--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
 
 export function startPage(t, ctx, { esc, money, icon, config }) {
@@ -98,7 +101,7 @@ export function startPage(t, ctx, { esc, money, icon, config }) {
   return { main, meta: { title: c.meta.title, description: c.meta.description } };
 }
 
-export function thanksPage(t, ctx, { icon, config }) {
+export function thanksPage(t, ctx, { esc, icon, config }) {
   const g = t.thanks;
   const main = `
 <section class="ty">
@@ -112,17 +115,27 @@ export function thanksPage(t, ctx, { icon, config }) {
     </div>
 
     <div class="ty__grid">
-      <form class="up" data-upload>
+      <form class="up" data-upload novalidate
+        action="${ctx.base}api/upload.php" data-email="${config.email}"
+        data-msg='${esc(JSON.stringify({ sending: g.upload.sending, sent: g.upload.sent, error: g.upload.error, tooBig: g.upload.tooBig, badType: g.upload.badType }))}'>
         <h2 class="h3">${g.upload.title}</h2>
         <p class="mute">${g.upload.text}</p>
+        <input type="hidden" name="lang" value="${t.lang}">
+        <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <fieldset class="up__who" data-who hidden>
+          <legend>${g.upload.who}</legend>
+          <label><span>${g.upload.fields.restaurant}</span><input name="restaurant" autocomplete="organization"></label>
+          <label><span>${g.upload.fields.email}</span><input name="email" type="email" autocomplete="email"></label>
+        </fieldset>
         <label class="up__drop" data-drop>
-          <input type="file" name="files" multiple accept=".pdf,.jpg,.jpeg,.png,.heic,image/*,application/pdf" data-files>
+          <input type="file" name="files" multiple accept="${ACCEPT}" data-files aria-describedby="up-limits">
           <span class="up__icon">${icon('photo')}</span>
           <span>${g.upload.drop} <u>${g.upload.browse}</u></span>
-          <small>${g.upload.limits}</small>
+          <small id="up-limits">${g.upload.limits}</small>
         </label>
         <ul class="up__list" data-file-list></ul>
         <button class="btn btn--accent btn--block" type="submit">${g.upload.send}</button>
+        <p class="up__msg" data-up-msg role="status" hidden></p>
         <p class="up__alt">${g.upload.alt} <a href="mailto:${config.email}">${config.email}</a></p>
       </form>
 

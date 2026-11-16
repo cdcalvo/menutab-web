@@ -169,13 +169,92 @@
     const drop = up.querySelector('[data-drop]');
     const input = up.querySelector('[data-files]');
     const list = up.querySelector('[data-file-list]');
+    const msg = up.querySelector('[data-up-msg]');
+    const btn = up.querySelector('button[type=submit]');
+    const who = up.querySelector('[data-who]');
+    const M = JSON.parse(up.dataset.msg);
+    const OK_EXT = /\.(pdf|jpe?g|png|hei[cf]|webp|gif|xlsx?|csv|docx?|txt)$/i;
+    const MAX = 20 * 1024 * 1024;
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const local = ['localhost', '127.0.0.1'].includes(location.hostname) || 'preview' in document.documentElement.dataset;
+    const sid = new URLSearchParams(location.search).get('session_id') || '';
+    let order = null;
+    try { order = JSON.parse(sessionStorage.getItem('menutab-order') || 'null'); } catch {}
+    // Sin pedido conocido (p. ej. vuelve otro día desde el enlace): pedimos restaurante y correo
+    if (!sid && !order) { who.hidden = false; who.querySelectorAll('input').forEach((i) => (i.required = true)); }
+    // Un lote por visita: si vuelve a enviar más archivos, van a la misma carpeta
+    const batch = [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, '0')).join('');
+    let files = [];
+
+    const problem = (f) => (!OK_EXT.test(f.name) ? M.badType : f.size > MAX ? M.tooBig : '');
     const show = () => {
-      list.innerHTML = [...input.files].map((f) => `<li><span>${f.name.replace(/</g, '&lt;')}</span><span>${(f.size / 1048576).toFixed(1)} MB</span></li>`).join('');
+      list.innerHTML = files.map((f, i) => {
+        const bad = problem(f);
+        return `<li data-i="${i}"${bad ? ' class="is-bad"' : ''}><span>${esc(f.name)}</span><span data-st>${bad || (f.size / 1048576).toFixed(1) + ' MB'}</span></li>`;
+      }).join('');
     };
-    input.addEventListener('change', show);
+    input.addEventListener('change', () => { files = [...input.files]; msg.hidden = true; show(); });
+    who.addEventListener('input', (e) => e.target.classList.remove('is-bad'));
     ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, () => drop.classList.add('is-over')));
     ['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, () => drop.classList.remove('is-over')));
-    up.addEventListener('submit', (e) => e.preventDefault()); // la subida se conecta con el backend en la fase de Stripe
+
+    const send = (data, onProgress) => new Promise((resolve, reject) => {
+      // XMLHttpRequest y no fetch: fetch no informa del progreso de subida
+      const x = new XMLHttpRequest();
+      x.open('POST', up.action);
+      x.setRequestHeader('Accept', 'application/json');
+      if (onProgress) x.upload.onprogress = (e) => e.lengthComputable && onProgress(e.loaded / e.total);
+      x.onload = () => (x.status === 200 ? resolve() : reject(new Error(x.status)));
+      x.onerror = () => reject(new Error('network'));
+      x.send(data);
+    });
+    const base = () => {
+      const fd = new FormData();
+      fd.append('batch', batch);
+      fd.append('session_id', sid);
+      for (const k of ['lang', 'website', 'restaurant', 'email']) fd.append(k, up.elements[k]?.value || '');
+      if (order) for (const k of ['restaurant', 'email', 'name', 'phone']) if (order[k] && !fd.get(k)) fd.set(k, order[k]);
+      return fd;
+    };
+    const say = (text, cls) => { msg.textContent = text; msg.className = 'up__msg ' + cls; msg.hidden = false; };
+
+    up.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bad = [...who.querySelectorAll('input')].filter((i) => !who.hidden && !i.checkValidity());
+      bad.forEach((i) => i.classList.add('is-bad'));
+      if (bad.length) { bad[0].focus(); return; }
+      const todo = files.map((f, i) => [f, i]).filter(([f]) => !problem(f));
+      if (!todo.length) { input.click(); return; }
+      btn.disabled = true;
+      msg.hidden = true;
+      let failed = 0;
+      for (const [f, i] of todo) {
+        const li = list.querySelector(`[data-i="${i}"]`);
+        if (li.classList.contains('is-ok')) continue;
+        const st = li.querySelector('[data-st]');
+        try {
+          if (local) { for (let p = 0; p <= 1; p += 0.25) { st.textContent = `${M.sending} ${Math.round(p * 100)}%`; await new Promise((r) => setTimeout(r, 120)); } }
+          else {
+            const fd = base();
+            fd.append('action', 'file');
+            fd.append('file', f);
+            await send(fd, (p) => (st.textContent = `${M.sending} ${Math.round(p * 100)}%`));
+          }
+          li.classList.add('is-ok');
+          st.textContent = '✓';
+        } catch {
+          failed++;
+          li.classList.add('is-bad');
+          st.textContent = '!';
+        }
+      }
+      try {
+        if (!local && failed < todo.length) { const fd = base(); fd.append('action', 'done'); await send(fd); }
+      } catch { failed = failed || 1; }
+      btn.disabled = false;
+      if (failed) say(`${M.error} ${up.dataset.email}`, 'is-err');
+      else say(M.sent, 'is-ok');
+    });
   }
 
   // Vídeos: arrancan solos (autoplay + muted, como los admite Safari en iPhone) y se pausan
@@ -195,7 +274,7 @@
   const root = document.documentElement;
   if (root.classList.contains('reveal')) {
     window.__reveal = 1;
-    const REVEAL = '.hero__copy > *, .hero__media, .value, .sec__head > *, .screen, .step, .more__copy > .h2, .more__list li, .portal, .plan, .hw, .faq__head > *, .qa, .cta__copy > :not(.btn), .form';
+    const REVEAL = '.hero__copy > *, .hero__media, .value, .sec__head > *, .screen, .story__visual, .story__txt, .story__end, .client, .more__copy > .h2, .more__list li, .portal, .plan, .hw, .faq__head > *, .qa, .cta__copy > :not(.btn), .form';
     const io = new IntersectionObserver((entries) => {
       entries.filter((e) => e.isIntersecting).forEach(({ target }, k) => {
         target.style.transitionDelay = `${Math.min(k, 6) * 75}ms`;

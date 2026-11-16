@@ -42,9 +42,21 @@ En local el formulario simula el envío (no hay PHP).
   los Price IDs de Stripe, la tarifa de envío y los correos (formato al inicio de `checkout.php`).
   `api/.htaccess` impide que se sirva.
 - En local (sin PHP) el botón de pago salta directo a la página de gracias, como vista previa.
-- **Sin probar todavía**: los PHP de `api/` (no hay PHP local ni cuenta de Stripe). Probar en modo
-  de pruebas de Stripe antes de publicar. La subida de archivos de la página de gracias aún no
-  tiene backend.
+- **Sin probar todavía**: `checkout.php` y `webhook.php` (no hay cuenta de Stripe). Probar en modo
+  de pruebas de Stripe antes de publicar.
+
+## Subida del menú (página de gracias)
+
+- `api/upload.php`: un archivo por petición (con barra de progreso) y una petición final `done` que
+  avisa por correo (`notify_to`) con la lista de archivos, el restaurante y el pedido de Stripe.
+- Se guardan **fuera de la web**, en `../../menutab-uploads/<lote>/` (junto a `public_html`), o en
+  `upload_dir` de `api/config.php`. Fotos, PDF, Excel, CSV y Word; 20 MB por archivo, 80 archivos y
+  600 MB por lote. Si el hosting tiene `upload_max_filesize` por debajo de 20 MB, subirlo.
+- Si la página llega sin pedido (ni `session_id` ni el pedido en la pestaña), pide restaurante y correo.
+- Probado con PHP 8.3 en Docker (sin Stripe):
+  `docker run --rm -p 8091:8000 -v "$PWD/dist:/app" php:8.3-cli php -S 0.0.0.0:8000 -t /app`
+  con un `dist/api/config.php` de prueba. En `localhost` el JS simula la subida; para probarla de
+  verdad, abrir la web por la IP de la red local.
 
 ## Informe para el socio
 

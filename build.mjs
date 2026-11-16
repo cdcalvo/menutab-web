@@ -122,6 +122,19 @@ ${script}</body>
 `;
 }
 
+// «Cómo funciona»: cinco escenas. Fotos de ambiente (generadas, con dos personajes fijos: la dueña y su
+// cocinero) con lo real montado dentro de los aparatos: en el paso 4, la pantalla del menú de Pal' Rancho.
+// El paso 3 enseña tres propuestas reales que le hicimos a Pal' Rancho.
+const SCENES = ['foto-duena-{lang}.jpg', 'foto-plato.jpg', null, 'foto-revision.jpg', 'foto-caja.jpg'];
+function howUi(t, ctx, i) {
+  const u = t.how.ui;
+  const src = (f) => `${ctx.base}assets/img/pasos/${f}`;
+  if (i === 2) return `<div class="options">
+          ${u.options.map((o, k) => `<figure class="options__item">${tablet(`<img src="${src(`opcion-${k + 1}.jpg`)}" alt="${esc(`${u.optionsAlt} ${k + 1}`)}" width="480" height="768" loading="lazy" decoding="async">`, 'tablet--opt')}<figcaption>${o}</figcaption></figure>`).join('')}
+        </div>`;
+  return `<div class="scene"><img class="scene__photo" src="${src(SCENES[i].replace('{lang}', t.lang))}" alt="${esc(u.alts[i])}" width="1400" height="933" loading="lazy" decoding="async"></div>`;
+}
+
 function home(t) {
   const ctx = routes(t, '');
   const p = config.prices;
@@ -184,10 +197,22 @@ function home(t) {
   <div class="wrap">
     <div class="sec__head">
       <h2 class="h2">${t.how.title}</h2>
+      <p class="lead">${t.how.lead}</p>
     </div>
-    <ol class="steps">
-      ${t.how.steps.map((s, i) => `<li class="step"><span class="step__n">${String(i + 1).padStart(2, '0')}</span><h3>${s.title}</h3><p>${s.text}</p></li>`).join('')}
+    <ol class="story">
+      ${t.how.steps.map((s, i) => `<li class="story__step story__step--${i + 1}">
+        <div class="story__visual">${howUi(t, ctx, i)}${t.how.ui.captions[i] ? `<p class="story__cap">${t.how.ui.captions[i]}</p>` : ''}</div>
+        <div class="story__txt"><span class="step__n">${String(i + 1).padStart(2, '0')}</span><h3>${s.title}</h3><p>${s.text}</p></div>
+      </li>`).join('')}
     </ol>
+    <figure class="story__end">
+      <img src="${ctx.base}assets/img/pasos/foto-clientes.jpg" alt="${esc(t.how.ui.end.alt)}" width="1600" height="1067" loading="lazy" decoding="async">
+      <figcaption>
+        <h3>${t.how.ui.end.title}</h3>
+        <p>${t.how.ui.end.text}</p>
+        <small>${t.how.ui.end.caption}</small>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
@@ -204,6 +229,26 @@ function home(t) {
       <img src="${ctx.base}assets/img/panel-platos.jpg" alt="${esc(t.more.portal.alt)}" width="1156" height="716" loading="lazy">
       <figcaption>${t.more.portal.caption}</figcaption>
     </figure>
+  </div>
+</section>
+
+<section class="sec" id="clients">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2">${t.clients.title}</h2>
+      <p class="lead">${t.clients.lead}</p>
+    </div>
+    <ul class="clients">
+      ${t.clients.items.map((c, i) => `<li class="client" style="--scroll: -${c.scroll}%; --delay: ${-i * 4}s">
+        ${tablet(`<img class="client__menu" src="${ctx.base}assets/img/clientes/menu-${c.key}.jpg" alt="${esc(`${t.clients.menuAlt} ${c.name}`)}" width="480" height="${{ 'el-rey': 1570, 'pal-rancho': 1284, 'don-matias': 1482 }[c.key]}" loading="lazy" decoding="async">`, 'tablet--client')}
+        <div class="client__info">
+          <img class="client__logo" src="${ctx.base}assets/img/clientes/logo-${c.key}.jpg" alt="${esc(c.name)}" loading="lazy" decoding="async">
+          <h3>${c.name}</h3>
+          ${c.city ? `<p class="client__city">${c.city}</p>` : ''}
+          <p class="client__fact">${c.fact}</p>
+        </div>
+      </li>`).join('')}
+    </ul>
   </div>
 </section>
 
