@@ -113,7 +113,7 @@ export const en = {
     title: 'Questions owners ask us.',
     items: [
       ['What do I need to send you?', 'Your menu as you have it today (photos of the printed menu, a PDF or an Excel sheet), your logo and pictures of your dishes. You upload them right after you order.'],
-      ['What if I don’t like the design?', 'We change it. You see every version working, just like on the tablet, and we keep adjusting it until you approve it.'],
+      ['What if I don’t like the design?', 'We send you up to three design proposals to choose from, and then up to three rounds of changes, all included in your setup. You see every version working, just like on the tablet, before you approve it.'],
       ['Do I need to buy new tablets?', 'No. If you already have compatible Android tablets, you can use them and only pay for the setup and the monthly plan.'],
       ['What happens if the internet goes down?', 'Nothing your guests will notice. The menu is stored on each tablet and keeps working offline. Changes sync as soon as the connection is back.'],
       ['Can I update the menu myself?', 'Yes. With Self-Service you edit prices, photos, dishes and promotions from the restaurant portal, and every tablet updates automatically.'],
@@ -291,7 +291,7 @@ export const es = {
     title: 'Lo que nos preguntan los dueños.',
     items: [
       ['¿Qué tengo que enviarles?', 'Tu menú como lo tengas hoy (fotos de la carta, un PDF o un Excel), tu logo y las fotos de tus platos. Los subes justo después de hacer tu pedido.'],
-      ['¿Y si no me gusta el diseño?', 'Lo cambiamos. Ves cada versión funcionando, tal como se verá en la tablet, y la seguimos ajustando hasta que la apruebes.'],
+      ['¿Y si no me gusta el diseño?', 'Te enviamos hasta tres propuestas de diseño para elegir y después hasta tres rondas de ajustes, todo incluido en la instalación. Ves cada versión funcionando, tal como se verá en la tablet, antes de aprobarla.'],
       ['¿Tengo que comprar tablets nuevas?', 'No. Si ya tienes tablets Android compatibles, puedes usarlas y pagar solo la instalación y el plan mensual.'],
       ['¿Qué pasa si se cae internet?', 'Nada que tus clientes noten. El menú está guardado en cada tablet y sigue funcionando sin conexión. Los cambios se sincronizan en cuanto vuelve.'],
       ['¿Puedo cambiar el menú yo mismo?', 'Sí. Con el plan Autogestionado cambias precios, fotos, platos y promociones desde el portal, y todas las tablets se actualizan solas.'],
