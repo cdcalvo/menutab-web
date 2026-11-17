@@ -41,9 +41,9 @@ const icon = (name, cls = 'ico') => `<svg class="${cls}" viewBox="0 0 24 24" ari
 const tablet = (inner, cls = '') => `<div class="tablet ${cls}"><div class="tablet__screen">${inner}</div></div>`;
 const wa = config.whatsapp ? `https://wa.me/${config.whatsapp}` : '';
 
-// Rutas de una página en los dos idiomas. key = '' (portada), 'start' o 'thanks'
+// Rutas de una página en los dos idiomas. key = '' (portada), 'start', 'thanks' u 'order'
 function routes(t, key) {
-  const segs = (tt) => (key === '' ? [] : key === 'start' ? [tt.slugs.start] : [tt.slugs.start, tt.slugs.thanks]);
+  const segs = (tt) => ({ '': [], start: [tt.slugs.start], thanks: [tt.slugs.start, tt.slugs.thanks], order: [tt.slugs.order] })[key];
   const path = (tt) => (tt.lang === 'es' ? 'es/' : '') + segs(tt).map((s) => s + '/').join('');
   const depth = path(t).split('/').filter(Boolean).length;
   const base = '../'.repeat(depth);
@@ -74,7 +74,7 @@ function shell(t, ctx, main, { title, description, jsonld, script = '' }) {
 <meta property="og:locale" content="${isEs ? 'es_US' : 'en_US'}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#14121A">
-${ctx.key === 'thanks' || PREVIEW ? '<meta name="robots" content="noindex">\n' : ''}<link rel="icon" href="${ctx.base}assets/img/menutab-favicon.svg" type="image/svg+xml">
+${ctx.key === 'thanks' || ctx.key === 'order' || PREVIEW ? '<meta name="robots" content="noindex">\n' : ''}<link rel="icon" href="${ctx.base}assets/img/menutab-favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${ctx.base}assets/img/favicon-180.png">
 <link rel="preload" href="${ctx.base}assets/fonts/jakarta-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${ctx.base}assets/fonts/manrope-var.woff2" as="font" type="font/woff2" crossorigin>
@@ -107,7 +107,7 @@ ${main}
       <a href="${ctx.home || './'}" aria-label="menutab">${logo('menutab-logo-oscuro.svg', 'logo')}</a>
       <p class="ftr__desc">${t.hero.kicker}</p>
     </div>
-    <nav class="ftr__col" aria-label="${t.footer.product}"><b>${t.footer.product}</b><a href="${a('how')}">${t.nav.how}</a><a href="${a('features')}">${t.nav.features}</a><a href="${a('pricing')}">${t.nav.pricing}</a><a href="${ctx.home}${t.slugs.start}/">${t.nav.cta}</a></nav>
+    <nav class="ftr__col" aria-label="${t.footer.product}"><b>${t.footer.product}</b><a href="${a('how')}">${t.nav.how}</a><a href="${a('features')}">${t.nav.features}</a><a href="${a('pricing')}">${t.nav.pricing}</a><a href="${ctx.home}${t.slugs.start}/">${t.nav.cta}</a><a href="${ctx.home}${t.slugs.order}/">${t.order.kicker}</a></nav>
     <nav class="ftr__col" aria-label="${t.footer.contact}"><b>${t.footer.contact}</b><a href="mailto:${config.email}">${config.email}</a>${wa ? `<a href="${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ''}<a href="${ctx.other || './'}" hreflang="${isEs ? 'en' : 'es'}">${t.nav.otherLabel}</a></nav>
   </div>
   <div class="wrap ftr__bottom">
@@ -341,6 +341,7 @@ function home(t) {
 }
 
 import { startPage, thanksPage } from './src/pages-checkout.mjs';
+import { orderPage } from './src/pages-order.mjs';
 const helpers = { esc, money, icon, tablet, config };
 
 const dist = root + 'dist/';
@@ -358,5 +359,7 @@ for (const t of [en, es]) {
   written.push(out(routes(t, 'start').path, shell(t, routes(t, 'start'), s.main, s.meta)));
   const g = thanksPage(t, routes(t, 'thanks'), helpers);
   written.push(out(routes(t, 'thanks').path, shell(t, routes(t, 'thanks'), g.main, g.meta)));
+  const o = orderPage(t, routes(t, 'order'), helpers);
+  written.push(out(routes(t, 'order').path, shell(t, routes(t, 'order'), o.main, o.meta)));
 }
 console.log((PREVIEW ? '[vista previa] ' : '') + 'dist/ listo:', written.join('  '));

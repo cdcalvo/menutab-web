@@ -1,8 +1,7 @@
 // Páginas de compra: configurador («Get started» / «Empezar») y confirmación («Gracias»).
 // El pago lo cobra Stripe Checkout (api/checkout.php); aquí solo se arma el pedido.
 
-// Lo mismo que acepta api/upload.php
-const ACCEPT = '.pdf,.jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.xlsx,.xls,.csv,.doc,.docx,.txt';
+import { checklist } from './pages-order.mjs';
 
 const LOCK = '<svg class="ico ico--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
 
@@ -10,12 +9,13 @@ export function startPage(t, ctx, { esc, money, icon, config }) {
   const c = t.checkout;
   const p = config.prices;
   const plans = t.pricing.plans;
+  const START = { tablet: 10, charger: 1, cable: 0 }; // cantidades iniciales: 10 tablets y su estación
   const stepper = (key) => `
         <div class="eq" data-eq="${key}">
           <div class="eq__txt"><b>${c.items[key][0]}</b><span>${c.items[key][1]} · ${money(p[key])} ${c.unit}</span></div>
           <div class="qty">
             <button type="button" class="qty__btn" data-step="-1" aria-label="−">−</button>
-            <input class="qty__n" type="number" name="${key}" min="0" max="200" value="0" inputmode="numeric" aria-label="${esc(c.items[key][0])}">
+            <input class="qty__n" type="number" name="${key}" min="0" max="200" value="${START[key]}" inputmode="numeric" aria-label="${esc(c.items[key][0])}">
             <button type="button" class="qty__btn" data-step="1" aria-label="+">+</button>
           </div>
         </div>`;
@@ -79,9 +79,10 @@ export function startPage(t, ctx, { esc, money, icon, config }) {
     <aside class="sum" aria-live="polite">
       <div class="sum__card">
         <h2 class="sum__title">${c.summary}</h2>
-        <ul class="sum__lines" data-sum-lines></ul>
-        <div class="sum__total"><span>${c.today}</span><b data-sum-today>$0</b></div>
-        <div class="sum__month"><span>${c.then}</span><b><span data-sum-month>$0</span>${c.perMonth}</b></div>
+        <!-- Prerrellenado con el plan por defecto (lo mismo que pinta site.js) para que no salte al cargar -->
+        <ul class="sum__lines" data-sum-lines><li><span>${plans[0].name} ${c.plan}<small>${c.setup}</small></span><b>${money(p[plans[0].key])}</b></li>${['tablet', 'charger', 'cable'].filter((k) => START[k]).map((k) => `<li><span>${c.items[k][0]} × ${START[k]}</span><b>${money(START[k] * p[k])}</b></li>`).join('')}</ul>
+        <div class="sum__total"><span>${c.today}</span><b data-sum-today>${money(p[plans[0].key] + ['tablet', 'charger', 'cable'].reduce((a, k) => a + START[k] * p[k], 0))}</b></div>
+        <div class="sum__month"><span>${c.then}</span><b><span data-sum-month>${money(p[plans[0].key])}</span>${c.perMonth}</b></div>
         <p class="sum__note">${c.monthlyNote}</p>
         <p class="sum__note">${c.taxes}</p>
         <label class="sum__terms"><input type="checkbox" data-terms> <span>${c.terms[0]} <a href="#">${c.terms[1]}</a> ${c.terms[2]} <a href="#">${c.terms[3]}</a>.</span></label>
@@ -101,7 +102,8 @@ export function startPage(t, ctx, { esc, money, icon, config }) {
   return { main, meta: { title: c.meta.title, description: c.meta.description } };
 }
 
-export function thanksPage(t, ctx, { esc, icon, config }) {
+export function thanksPage(t, ctx, helpers) {
+  const { icon, config } = helpers;
   const g = t.thanks;
   const main = `
 <section class="ty">
@@ -115,41 +117,18 @@ export function thanksPage(t, ctx, { esc, icon, config }) {
     </div>
 
     <div class="ty__grid">
-      <form class="up" data-upload novalidate
-        action="${ctx.base}api/upload.php" data-email="${config.email}"
-        data-msg='${esc(JSON.stringify({ sending: g.upload.sending, done: g.upload.done, error: g.upload.error, tooBig: g.upload.tooBig, badType: g.upload.badType }))}'>
-        <h2 class="h3">${g.upload.title}</h2>
-        <p class="mute">${g.upload.text}</p>
-        <input type="hidden" name="lang" value="${t.lang}">
-        <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
-        <fieldset class="up__who" data-who hidden>
-          <legend>${g.upload.who}</legend>
-          <label><span>${g.upload.fields.restaurant}</span><input name="restaurant" autocomplete="organization"></label>
-          <label><span>${g.upload.fields.email}</span><input name="email" type="email" autocomplete="email"></label>
-        </fieldset>
-        <label class="up__drop" data-drop>
-          <input type="file" name="files" multiple accept="${ACCEPT}" data-files aria-describedby="up-limits">
-          <span class="up__icon">${icon('photo')}</span>
-          <span>${g.upload.drop} <u>${g.upload.browse}</u></span>
-          <small id="up-limits">${g.upload.limits}</small>
-        </label>
-        <ul class="up__list" data-file-list></ul>
-        <button class="btn btn--accent btn--block" type="submit">${g.upload.send}</button>
-        <p class="up__msg" data-up-msg role="status" hidden></p>
-        <div class="up__done" data-up-done role="status" tabindex="-1" hidden>
-          <span class="up__done-ico">${icon('check')}</span>
-          <div>
-            <b data-up-done-title></b>
-            <p>${g.upload.sent}</p>
-            <button class="btn btn--ghost-dark btn--sm" type="button" data-up-more>${g.upload.more}</button>
-          </div>
-        </div>
-        <p class="up__alt">${g.upload.alt} <a href="mailto:${config.email}">${config.email}</a></p>
-      </form>
+      <div class="ty__main">
+        <p class="ty__noorder" data-ty-noorder hidden>${g.noOrder[0]} <a href="${ctx.home}${t.slugs.order}/">${g.noOrder[1]}</a> ${g.noOrder[2]}</p>
+        ${checklist(t, ctx, helpers)}
+      </div>
 
-      <ol class="tl">
-        ${g.steps.map(([when, what], i) => `<li class="tl__item${i === 0 ? ' is-now' : ''}"><span class="tl__dot"></span><b>${when}</b><p>${what}</p></li>`).join('')}
-      </ol>
+      <div class="ty__side">
+        <ol class="tl">
+          ${g.steps.map(([when, what], i) => `<li class="tl__item${i === 0 ? ' is-now' : ''}"${i === g.steps.length - 1 ? ' data-ty-ship' : ''}><span class="tl__dot"></span><b>${when}</b><p>${what}</p></li>`).join('')}
+          <li class="tl__item" data-ty-own hidden><span class="tl__dot"></span><b>${g.stepOwn[0]}</b><p>${g.stepOwn[1]}</p></li>
+        </ol>
+        <p class="ty__track">${g.orderLink[0]} <a href="${ctx.home}${t.slugs.order}/" data-ty-order-link>${g.orderLink[1]} ${icon('arrow', 'ico ico--sm')}</a></p>
+      </div>
     </div>
 
     <p class="ty__help">${g.help} <a href="mailto:${config.email}">${config.email}</a> · <a href="${ctx.home || './'}">${g.back}</a></p>

@@ -60,6 +60,11 @@ if ($hardware) {
   $params['shipping_address_collection'] = ['allowed_countries' => ['US']];
   if (!empty($cfg['shipping_rate'])) $params['shipping_options'] = [['shipping_rate' => $cfg['shipping_rate']]];
 }
+// «Mi pedido» necesita saber si hay envío (sin equipos no hay paso «Enviado»)
+$hw = ['hardware' => $hardware ? 'ship' : 'own'];
+foreach (['tablet', 'charger', 'cable'] as $k) if ($hardware) $hw[$k] = (string)max(0, min(200, (int)($in[$k] ?? 0)));
+$params['subscription_data']['metadata'] += $hw + ['stage' => 'paid'];
+$params['metadata'] += $hw;
 if (!empty($cfg['automatic_tax'])) $params['automatic_tax'] = ['enabled' => 'true'];
 
 $ch = curl_init('https://api.stripe.com/v1/checkout/sessions');

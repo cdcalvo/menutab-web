@@ -58,18 +58,31 @@ En local el formulario simula el envío (no hay PHP).
 - Pendiente para modo real: Price IDs y clave de modo real, endpoint del webhook en el panel de
   Stripe, impuesto de venta (`automatic_tax`) y tarifa de envío según decida el socio.
 
-## Subida del menú (página de gracias)
+## «Mi pedido» y archivos del cliente
 
-- `api/upload.php`: un archivo por petición (con barra de progreso) y una petición final `done` que
-  avisa por correo (`notify_to`) con la lista de archivos, el restaurante y el pedido de Stripe.
-- Se guardan **fuera de la web**, en `../../menutab-uploads/<lote>/` (junto a `public_html`), o en
-  `upload_dir` de `api/config.php`. Fotos, PDF, Excel, CSV y Word; 20 MB por archivo, 80 archivos y
-  600 MB por lote. Si el hosting tiene `upload_max_filesize` por debajo de 20 MB, subirlo.
-- Si la página llega sin pedido (ni `session_id` ni el pedido en la pestaña), pide restaurante y correo.
-- Probado con PHP 8.3 en Docker (sin Stripe):
-  `docker run --rm -p 8091:8000 -v "$PWD/dist:/app" php:8.3-cli php -S 0.0.0.0:8000 -t /app`
-  con un `dist/api/config.php` de prueba. En `localhost` el JS simula la subida; para probarla de
-  verdad, abrir la web por la IP de la red local.
+- `/my-order/` y `/es/mi-pedido/`: el cliente vuelve cuando quiera, sin contraseña. Pide un enlace con
+  su correo (`api/order.php`, acción `login`) o usa el del correo de bienvenida que manda
+  `webhook.php` tras el pago. El enlace está firmado con `access_secret` y vale 30 días (se renueva en
+  cada visita). La página de gracias abre el pedido recién pagado con el `session_id` de Stripe.
+- **El pedido es la suscripción de Stripe.** Su estado va en los metadatos:
+  `stage` = `paid` · `received` · `proposals` · `changes` · `preparing` · `shipped` · `live`,
+  `round` (1-3, ronda de ajustes), `tracking`, `proposal_url` (https) y `eta` (fecha estimada del paso
+  actual, `AAAA-MM-DD`; sin fecha no se muestra). Para avanzar un pedido:
+  `stripe subscriptions update sub_… -d "metadata[stage]=changes" -d "metadata[round]=2" -d "metadata[eta]=2026-11-24"`
+  (o en el panel de Stripe, ficha de la suscripción → Metadatos). Sin equipos (`hardware=own`) no
+  hay paso «Enviado». Con menú y logo (o «no tengo logo») pasa solo de `paid` a `received`.
+- Lista de lo que necesitamos: menú actual y logo (obligatorios), fotos de platos y referencias de
+  estilo. `api/upload.php`: un archivo por petición con su tipo y una petición final `done` que nos
+  avisa por correo. Se guardan **fuera de la web**, en `../../menutab-uploads/orders/<sub_…>/`
+  (o en `upload_dir`), como `menu-01-….jpg`, `logo-02-….png`, etc. 20 MB por archivo; si el hosting
+  tiene `upload_max_filesize` por debajo, subirlo.
+- «Gestionar pagos» abre el portal de clientes de Stripe con la configuración `portal_config`
+  (tarjeta, facturas y datos; **sin cancelar** hasta decidir la política).
+- Plantilla de Excel del menú: `assets/files/` (se regenera con `scripts/plantilla-menu.py`).
+- En local y en la vista previa (sin PHP), «Mi pedido» enseña un pedido de ejemplo y las subidas se simulan.
+- Claves nuevas de `api/config.php`: `portal_config` (`bpc_…`), `access_secret` (cadena aleatoria
+  larga, p. ej. `openssl rand -hex 32`) y, solo en local, `dev_log_links` (el enlace de acceso va al
+  log si el correo no sale). `api/.htaccess` no sirve `config.php` ni `_lib.php`.
 
 ## Informe para el socio
 

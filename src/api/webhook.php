@@ -1,7 +1,8 @@
 <?php
 // Webhook de Stripe: avisa por correo de cada compra completada.
 // En el panel de Stripe: endpoint https://getmenutab.com/api/webhook.php, evento checkout.session.completed.
-$cfg = require __DIR__ . '/config.php';
+require __DIR__ . '/_lib.php';
+$cfg = cfg();
 $payload = file_get_contents('php://input');
 $sig = $_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '';
 
@@ -30,6 +31,11 @@ if (($event['type'] ?? '') === 'checkout.session.completed' && ($obj['metadata']
   $subject = '=?UTF-8?B?' . base64_encode('Nueva compra: ' . ($m['restaurant'] ?? '')) . '?=';
   if (!mail($cfg['notify_to'], $subject, $body, "From: menutab <{$cfg['notify_from']}>\r\nContent-Type: text/plain; charset=UTF-8")) {
     error_log('menutab webhook: no se pudo enviar el aviso de compra ' . ($s['id'] ?? '-'));
+  }
+  // Al cliente: bienvenida con su enlace a «Mi pedido»
+  $to = $s['customer_details']['email'] ?? '';
+  if ($to && !empty($s['subscription'])) {
+    mail_access($to, ($s['locale'] ?? '') === 'es' ? 'es' : 'en', [['sub' => $s['subscription'], 'restaurant' => $m['restaurant'] ?? '']], true);
   }
 }
 http_response_code(200);

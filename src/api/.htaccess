@@ -1,4 +1,4 @@
-# Solo se puede llamar a los endpoints; config.php nunca se sirve
-<Files "config.php">
+# Solo se puede llamar a los endpoints; config.php y _lib.php nunca se sirven
+<FilesMatch "^(config|_lib)\.php$">
   Require all denied
-</Files>
+</FilesMatch>
