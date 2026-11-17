@@ -14,8 +14,10 @@ $valid = $ts && abs(time() - $ts) < 300 && array_filter($parts['v1'] ?? [], fn($
 if (!$valid) { http_response_code(400); exit; }
 
 $event = json_decode($payload, true);
-if (($event['type'] ?? '') === 'checkout.session.completed') {
-  $s = $event['data']['object'];
+$obj = $event['data']['object'] ?? [];
+// Solo los pagos de la web de menutab (la cuenta de Stripe la usan también otros negocios)
+if (($event['type'] ?? '') === 'checkout.session.completed' && ($obj['metadata']['source'] ?? '') === 'menutab') {
+  $s = $obj;
   $m = $s['metadata'] ?? [];
   $amount = number_format(($s['amount_total'] ?? 0) / 100, 2);
   $body = "Nueva compra en getmenutab.com\n\n"
@@ -26,6 +28,8 @@ if (($event['type'] ?? '') === 'checkout.session.completed') {
     . "Cobrado hoy: \$$amount\n"
     . 'Sesión: ' . ($s['id'] ?? '-') . "\n";
   $subject = '=?UTF-8?B?' . base64_encode('Nueva compra: ' . ($m['restaurant'] ?? '')) . '?=';
-  mail($cfg['notify_to'], $subject, $body, "From: menutab <{$cfg['notify_from']}>\r\nContent-Type: text/plain; charset=UTF-8");
+  if (!mail($cfg['notify_to'], $subject, $body, "From: menutab <{$cfg['notify_from']}>\r\nContent-Type: text/plain; charset=UTF-8")) {
+    error_log('menutab webhook: no se pudo enviar el aviso de compra ' . ($s['id'] ?? '-'));
+  }
 }
 http_response_code(200);

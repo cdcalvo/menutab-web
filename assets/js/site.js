@@ -172,6 +172,7 @@
     const msg = up.querySelector('[data-up-msg]');
     const btn = up.querySelector('button[type=submit]');
     const who = up.querySelector('[data-who]');
+    const done = up.querySelector('[data-up-done]');
     const M = JSON.parse(up.dataset.msg);
     const OK_EXT = /\.(pdf|jpe?g|png|hei[cf]|webp|gif|xlsx?|csv|docx?|txt)$/i;
     const MAX = 20 * 1024 * 1024;
@@ -252,8 +253,23 @@
         if (!local && failed < todo.length) { const fd = base(); fd.append('action', 'done'); await send(fd); }
       } catch { failed = failed || 1; }
       btn.disabled = false;
-      if (failed) say(`${M.error} ${up.dataset.email}`, 'is-err');
-      else say(M.sent, 'is-ok');
+      if (failed) { say(`${M.error} ${up.dataset.email}`, 'is-err'); return; }
+      // Todo recibido: se cierra el formulario (sin botón de enviar a la vista) para que no se reenvíe
+      // por no haber visto el mensaje; «Enviar más archivos» lo reabre en el mismo lote
+      const n = list.querySelectorAll('li.is-ok').length;
+      done.querySelector('[data-up-done-title]').textContent = (n === 1 ? M.done[0] : M.done[1]).replace('{n}', n);
+      up.classList.add('is-done');
+      done.hidden = false;
+      done.focus({ preventScroll: true });
+      done.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+    up.querySelector('[data-up-more]').addEventListener('click', () => {
+      files = [];
+      input.value = '';
+      list.innerHTML = '';
+      done.hidden = true;
+      up.classList.remove('is-done');
+      input.click();
     });
   }
 

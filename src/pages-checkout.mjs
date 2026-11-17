@@ -117,7 +117,7 @@ export function thanksPage(t, ctx, { esc, icon, config }) {
     <div class="ty__grid">
       <form class="up" data-upload novalidate
         action="${ctx.base}api/upload.php" data-email="${config.email}"
-        data-msg='${esc(JSON.stringify({ sending: g.upload.sending, sent: g.upload.sent, error: g.upload.error, tooBig: g.upload.tooBig, badType: g.upload.badType }))}'>
+        data-msg='${esc(JSON.stringify({ sending: g.upload.sending, done: g.upload.done, error: g.upload.error, tooBig: g.upload.tooBig, badType: g.upload.badType }))}'>
         <h2 class="h3">${g.upload.title}</h2>
         <p class="mute">${g.upload.text}</p>
         <input type="hidden" name="lang" value="${t.lang}">
@@ -136,6 +136,14 @@ export function thanksPage(t, ctx, { esc, icon, config }) {
         <ul class="up__list" data-file-list></ul>
         <button class="btn btn--accent btn--block" type="submit">${g.upload.send}</button>
         <p class="up__msg" data-up-msg role="status" hidden></p>
+        <div class="up__done" data-up-done role="status" tabindex="-1" hidden>
+          <span class="up__done-ico">${icon('check')}</span>
+          <div>
+            <b data-up-done-title></b>
+            <p>${g.upload.sent}</p>
+            <button class="btn btn--ghost-dark btn--sm" type="button" data-up-more>${g.upload.more}</button>
+          </div>
+        </div>
         <p class="up__alt">${g.upload.alt} <a href="mailto:${config.email}">${config.email}</a></p>
       </form>
 

@@ -40,8 +40,9 @@ $params = [
   'phone_number_collection' => ['enabled' => 'true'],
   'billing_address_collection' => 'required',
   'line_items' => [['price' => $cfg['prices'][$plan], 'quantity' => 1]],
-  'subscription_data' => ['metadata' => ['restaurant' => $restaurant, 'contact' => $name, 'phone' => $phone, 'plan' => $plan]],
-  'metadata' => ['restaurant' => $restaurant, 'contact' => $name, 'phone' => $phone, 'plan' => $plan],
+  // source=menutab: la cuenta de Stripe la comparten otros negocios; el webhook solo atiende estos pagos
+  'subscription_data' => ['metadata' => ['source' => 'menutab', 'restaurant' => $restaurant, 'contact' => $name, 'phone' => $phone, 'plan' => $plan]],
+  'metadata' => ['source' => 'menutab', 'restaurant' => $restaurant, 'contact' => $name, 'phone' => $phone, 'plan' => $plan],
   'success_url' => $cfg['site_url'] . ($lang === 'es' ? '/es/empezar/gracias/' : '/start/thanks/') . '?session_id={CHECKOUT_SESSION_ID}',
   'cancel_url' => $cfg['site_url'] . ($lang === 'es' ? '/es/empezar/' : '/start/') . '?plan=' . $plan,
 ];

@@ -42,8 +42,21 @@ En local el formulario simula el envío (no hay PHP).
   los Price IDs de Stripe, la tarifa de envío y los correos (formato al inicio de `checkout.php`).
   `api/.htaccess` impide que se sirva.
 - En local (sin PHP) el botón de pago salta directo a la página de gracias, como vista previa.
-- **Sin probar todavía**: `checkout.php` y `webhook.php` (no hay cuenta de Stripe). Probar en modo
-  de pruebas de Stripe antes de publicar.
+- La cuenta de Stripe es la del socio y la comparten otros negocios: cada pago de la web lleva
+  `metadata.source = menutab` y `webhook.php` ignora los que no lo llevan.
+- Probado de punta a punta (2026-11-17) en el sandbox de Stripe `menutab-web` con PHP 8.3 en Docker:
+  suscripción + equipos en la primera factura, dirección de envío, webhook con firma, página de
+  gracias y subida enlazada al pedido pagado. Para repetirlo:
+  - `src/api/config.php` local con la clave `sk_test_` y los Price IDs del sandbox (no versionado).
+  - `node build.mjs`, y luego (re)arrancar el contenedor: el build recrea `dist/` y el contenedor
+    se queda con la carpeta vieja.
+    `docker run -d --name menutab-php -p 8091:8000 -v "$PWD/dist:/app" php:8.3-cli php -d upload_max_filesize=20M -d post_max_size=24M -S 0.0.0.0:8000 -t /app`
+  - `stripe listen --events checkout.session.completed --forward-to http://<IP local>:8091/api/webhook.php`
+    (su `whsec_` va en `webhook_secret`).
+  - Abrir la web por la IP local, no por `localhost` (en `localhost` el pago se simula). Tarjeta `4242 4242 4242 4242`.
+  - Sin `-d upload_max_filesize` PHP corta a 2 MB y la subida da `413`: en el hosting, comprobarlo.
+- Pendiente para modo real: Price IDs y clave de modo real, endpoint del webhook en el panel de
+  Stripe, impuesto de venta (`automatic_tax`) y tarifa de envío según decida el socio.
 
 ## Subida del menú (página de gracias)
 

@@ -455,6 +455,13 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .up__msg { margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-size: var(--fs-sm); font-weight: 700; }
 .up__msg.is-ok { background: #DCFCE7; color: #166534; }
 .up__msg.is-err { background: #FFF1F2; color: var(--guava-ink); }
+.up.is-done .up__drop, .up.is-done [data-who], .up.is-done button[type=submit] { display: none; }
+.up.is-done .up__list { margin-top: 20px; }
+.up__done { display: flex; gap: 14px; align-items: flex-start; margin-top: 4px; padding: 18px; border-radius: 16px; background: #DCFCE7; color: #166534; outline: none; }
+.up__done b { display: block; font-size: var(--fs-md); }
+.up__done p { margin: 4px 0 14px; font-size: var(--fs-sm); color: #166534; }
+.up__done-ico { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #fff; color: #16A34A; }
+.up__done-ico .ico { width: 20px; height: 20px; stroke-width: 2.6; }
 .up__alt { margin-top: 14px; font-size: var(--fs-sm); color: var(--ink-2); text-align: center; }
 .tl { position: relative; display: grid; gap: 30px; padding: 8px 0 0 34px; }
 .tl::before { content: ''; position: absolute; left: 9px; top: 14px; bottom: 14px; width: 2px; background: var(--line); }
